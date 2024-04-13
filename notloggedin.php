@@ -1,16 +1,19 @@
 <?php include 'header.php'; ?>
 
 <div class = "content">
-    <div class = "backdrop"></div>
-
-
-    <h1>Where Every Frame Sparks a Conversation</h1>
-    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#loginModal" id = "clickme">
-        Get Started! -- It's Free!
-    </button>
-
+    <div class = "notloggedin-wrapper">
+        <i style="font-size: 30ch" class="fa-solid fa-face-sad-tear"></i>
+        
+        <div>
+            <h1><b>Uh oh...</b></h1>
+            <div>you're not logged in</div>
+        </div>
+        
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#loginModal" id = "clickme">
+            Get Started! -- It's Free!
+        </button>
+    </div>
 </div>
-
 
 
 <!-- Login Modal -->
@@ -152,6 +155,7 @@
 </div>
 
 <!-- toasts -->
+
 <div class="toast-container position-fixed bottom-0 end-0 p-3">
   <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="toast-header">
@@ -164,7 +168,6 @@
     </div>
   </div>
 </div>
-
 
 <div class="toast-container position-fixed bottom-0 end-0 p-3">
   <div id="failedToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
@@ -205,6 +208,7 @@
     </div>
   </div>
 </div>
+
 
 <!-- login php -->
 <?php	 
@@ -300,5 +304,6 @@
 		
 
 ?>
+    
 
-<?php include 'footer.php'; ?>
+<?php include 'footer.php';?>
