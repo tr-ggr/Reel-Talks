@@ -22,6 +22,18 @@
   gap: 1em;
 }
 
+
+.btn-custom {
+  background-color: #222831;
+}
+
+.btn-custom:hover,
+.btn-custom:focus,
+.btn-custom:focus-visible {
+  background-color: #393e46;
+  color: #fff;
+}
+
 .genre-banner {
   width: 100%;
   height: fit-content;
@@ -67,6 +79,30 @@
   flex-direction: column;
   height: 100%;
   overflow: auto;
+}
+
+.user-profile{
+  width: 100%;
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1em;
+  padding: 1em;
+  font-size: 2ch;
+  font-weight: bold;
+}
+
+
+.user-profile:hover{
+  background-color: #393e46;
+}
+
+.user-profile-picture {
+  height: 3em;
+  width: 3em;
+  background-color: blue;
+  border-radius: 100%;
 }
 
 .post-image {
@@ -173,6 +209,13 @@
   flex-direction: column;
   padding: 1em;
 }
+
+.comment{
+  width: 100%;
+  height: fit-content;
+
+}
+
 
 .author-profile-comment {
   width: 2em;

@@ -231,6 +231,7 @@
       if(password_verify($pword, $row['password'])){
         $_SESSION["acctid"] = $row['acctid'];
         $_SESSION["userid"] = $row['userid'];
+        $_SESSION["username"] = $row['username'];
         $_SESSION["isAdmin"] = $row['isAdmin'];
         echo "<script> window.location.replace('homepage.php');</script>";
       } else {

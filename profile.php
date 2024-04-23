@@ -92,19 +92,21 @@
 
 
 
-        <div class = "sidebar-wrapper">
-            <button class = "btn btn-primary"  type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createDiscussion">Create new Discussion</button>
-            <button class = "btn btn-primary">Home</button>
-            <button class = "btn btn-primary">My Discussions</button>
-            <button class = "btn btn-primary">Messages</button>
-            <button class = "btn btn-danger">Logout</button>
+        <form class = "sidebar-wrapper" method = "post">
+       
+
+            <button class = "btn btn-custom"  type="button" data-bs-toggle="modal" data-bs-target="#createDiscussion">Create new Discussion</button>
+            <a href="homepage.php" class="btn btn-custom">Home</a>
+            <a href="profile.php" class="btn btn-custom">My Profile</a>
+            <button class = "btn btn-custom">Messages</button>
+            <button type = "submit" name = "btnLogout" class = "btn btn-danger">Logout</button>
+            
             <hr>
             <h3>Genres</h3>
-            <button class = "btn btn-primary">Horror</button>
-            <button class = "btn btn-primary">Sci-fi</button>
-            <button class = "btn btn-primary">Slice of Life</button>
-
-        </div>
+            <button class = "btn btn-custom">Horror</button>
+            <button class = "btn btn-custom">Sci-fi</button>
+            <button class = "btn btn-custom">Slice of Life</button>
+        </form>
     </div>
 </div>
 
