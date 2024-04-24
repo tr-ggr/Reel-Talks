@@ -1,5 +1,6 @@
 <?php
     include 'connect.php';
+    include 'api/api.php';
     session_start();
 ?>
 <!DOCTYPE html>

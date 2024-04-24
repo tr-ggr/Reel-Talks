@@ -20,38 +20,6 @@
             </form>
 
             <div class = "posts-container">
-                <!-- <div class = "post">
-                    <div class = "post-image"></div>
-                    <div class = "post-content">
-                        <div class = "post-content-top">
-                            <div>Genre</div>
-                            <div>• Time</div>
-                        </div>
-                        <div class = "post-content-middle">
-                            <h1>Post Title</h1>
-                            <div class = "author">
-                                <div class = "author-picture"></div>
-                                <div>Post Author</div>
-
-                                <div class = "karma-container">
-                                    <button><i class="fa-solid fa-thumbs-up"></i></button>
-                                    <div class = "karma-counter">0</div>
-                                    <button><i class="fa-solid fa-thumbs-down"></i></button>
-                                </div>
-
-                                <div class = "comments-container">
-                                    <i class="fa-solid fa-comment"></i>
-                                    <div class = "comments">0 comments</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class = "post-misc">
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#post-1" id = "clickme">
-                        View Post
-                    </button>
-                    </div>
-                </div> -->
 
                 <table class="table table-striped">
   <thead>
