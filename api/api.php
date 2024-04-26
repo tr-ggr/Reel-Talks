@@ -7,7 +7,7 @@ function loadDiscussions($row){
     echo '<script>
         $(".posts-container").empty();
     </script>';
-    
+
     $row = array_reverse($row);
     foreach($row as $post){
         

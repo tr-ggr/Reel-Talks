@@ -22,7 +22,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-      <form style="width: 100%;" method = "post">
+            <form style="width: 100%;" method = "post">
                 <!-- Username input -->
                 <div class="form-outline mb-4">
                   <input type="text" id="form2Example1" class="form-control" name = "txtusername" />
@@ -36,14 +36,13 @@
                 </div>
 
               
-                <!-- Submit button -->
-                <button type="submit" class="btn btn-primary" name = "btnLogin">Log in</button>
-              
-                
-              </form>
+               
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Login</button>
+         <!-- Submit button -->
+         <button type="submit" class="btn btn-primary" name = "btnLogin">Log in</button>
+              
+              </form>
         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registerModal" id = "clickme">
             Don't have an account
         </button>
@@ -140,11 +139,13 @@
         </div>
 
 
-        <button type="submit" class="btn btn-primary btn-block" name="btnRegister">Register</button>
-</form>
+        
+
       </div>
       <div class="modal-footer">
+      <button type="submit" class="btn btn-primary btn-block" name="btnRegister">Register</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </form>
         
       </div>
     </div>
@@ -208,7 +209,14 @@
 
 <!-- login php -->
 <?php	 
-	if(isset($_POST['btnLogin'])){				
+	if(isset($_POST['btnLogin'])){		
+    
+    echo "<script>
+    const toastLiveExample = document.getElementById('successToast')
+    const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+    toastBootstrap.show()
+  </script>";
+
 		$uname=$_POST['txtusername'];
 		$pword=$_POST['txtpassword'];
 		
@@ -251,6 +259,8 @@
 <!-- register php -->
 <?php	 
 	if(isset($_POST['btnRegister'])){		
+
+
 		//retrieve data from form and save the value to a variable
 		//for tbluserprofile
 		$fname=$_POST['txtfirstname'];		
