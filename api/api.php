@@ -3,8 +3,31 @@
 include 'connect.php';
 
 
-function loadDiscussions($row)
+function loadDiscussions($search = "", $userid = "")
 {
+
+    $searchKeyword = $search;
+    $userID = $userid;
+
+    if ($searchKeyword == "" && $userID == "") {
+        $sqlSearch = "SELECT * FROM tblpost";
+        $result = mysqli_query($GLOBALS['connection'], $sqlSearch);
+        $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    } elseif ($searchKeyword != "" && $userID == "") {
+        $sqlSearch = "SELECT * FROM tblpost WHERE PostTitle LIKE '%$searchKeyword%' OR Content LIKE '%$searchKeyword%'";
+        $result = mysqli_query($GLOBALS['connection'], $sqlSearch);
+        $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    } elseif ($searchKeyword == "" && $userID != "") {
+        $sqlSearch = "SELECT * FROM tblpost WHERE UserAccountID = '$userID'";
+        $result = mysqli_query($GLOBALS['connection'], $sqlSearch);
+        $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    } else {
+        $sqlSearch = "SELECT * FROM tblpost WHERE PostTitle LIKE '%$searchKeyword%' OR Content LIKE '%$searchKeyword%' AND UserAccountID = '$userID'";
+        $result = mysqli_query($GLOBALS['connection'], $sqlSearch);
+        $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
+
+
     echo '<script>
         $(".posts-container").empty();
     </script>';

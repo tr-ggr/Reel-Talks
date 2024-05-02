@@ -36,5 +36,3 @@ session_start();
       <button class="About Us">ABOUT US</button>
     </div>
   </div>
-
-  <!-- style="border-bottom: #76abae solid 5px; color: #fdfdfd" -->

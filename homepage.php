@@ -28,35 +28,15 @@
 
         if (isset($_POST['btnSearch'])) {
           $searchKeyword = $_POST['txtSearch'];
-          $sqlSearch = "SELECT * FROM tblpost WHERE PostTitle LIKE '%$searchKeyword%' OR Content LIKE '%$searchKeyword%'";
-          $result = mysqli_query($connection, $sqlSearch);
-          $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-          if ($row == 0) {
-            echo "<script>alert('NO POSTS')</script>";
-          } else {
-            loadDiscussions($row);
-          }
+          loadDiscussions($searchKeyword);
         } else {
-          $sql = "Select * FROM tblpost";
-          $result = mysqli_query($connection, $sql);
-          $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-
-          if ($row == 0) {
-            echo "<script>alert('NO POSTS')</script>";
-          } else {
-            loadDiscussions($row);
-          }
+          loadDiscussions();
         }
 
         ?>
       </div>
 
     </div>
-
-
-
 
     <form class="sidebar-wrapper" method="post">
 
