@@ -8,6 +8,27 @@
   margin-bottom: 1em;
 }
 
+.profilepage-container {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  gap: 2em;
+}
+
+.profilepage-picture {
+  width: 10em;
+  height: 10em;
+  background-color: #fff;
+  border-radius: 100%;
+}
+
+.profilepage-buttons {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1.5em;
+}
+
 .content {
   display: flex;
   flex-direction: column;
@@ -21,7 +42,6 @@
   overflow-x: hidden;
   gap: 1em;
 }
-
 
 .btn-custom {
   background-color: #222831;
@@ -81,7 +101,7 @@
   overflow: auto;
 }
 
-.user-profile{
+.user-profile {
   width: 100%;
   display: flex;
   gap: 1em;
@@ -93,8 +113,7 @@
   font-weight: bold;
 }
 
-
-.user-profile:hover{
+.user-profile:hover {
   background-color: #393e46;
 }
 
@@ -210,12 +229,10 @@
   padding: 1em;
 }
 
-.comment{
+.comment {
   width: 100%;
   height: fit-content;
-
 }
-
 
 .author-profile-comment {
   width: 2em;

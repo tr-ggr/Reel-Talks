@@ -2,8 +2,83 @@
 
 <div class="content">
   <div class="genre-banner">
-    <h1 class="fa-regular fa-comments"></h1>
-    <h1>My Discussions</h1>
+    <h1 class="fa-regular fa-user"></h1>
+    <h1>User Profile</h1>
+  </div>
+
+  <div class="profilepage-container">
+    <div class="profilepage-picture"></div>
+    <div class="profilepage-info">
+      <h1><?php echo $_GET['user']; ?></h1>
+      <button class="btn btn-link">Following: <?php echo getFollowing() ?></button>
+      <button class="btn btn-link">Followers: <?php echo getFollowers() ?></button>
+
+
+      <form class="profilepage-buttons" method="post">
+        <?php if ($_GET['user'] == $_SESSION['username']) {
+          echo '<button class="btn btn-outline-primary">Edit Profile</button>';
+        } else {
+          if (isFollowing()) {
+            echo '
+            <button type = "submit" id="btnUnfollow" name = "btnUnfollow" class="btn btn-primary">Unfollow</button>
+            <button class="btn btn-outline-primary">Message </button>';
+          } else {
+            echo '
+            <button type = "submit" id="btnFollow" name = "btnFollow" class="btn btn-outline-primary">Follow</button>
+            <button class="btn btn-outline-primary">Message </button>';
+          }
+        }
+
+        if (isFollowed() && $_GET['user'] != $_SESSION['username']) {
+          echo '<div>Follows you</div>';
+        }
+
+        if (isset($_POST['btnFollow'])) {
+          if (followUser()) {
+            echo "<script>      
+            window.onload = function(){
+              const toastLiveExample = document.getElementById('successFollow')
+              const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+              toastBootstrap.show()
+            } </script>";
+          } else {
+            echo "<script>      
+            window.onload = function(){
+              const toastLiveExample = document.getElementById('UserDoesNotExist')
+              const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+              toastBootstrap.show()
+            } </script>";
+          }
+        }
+
+        if (isset($_POST['btnUnfollow'])) {
+          if (unfollowUser()) {
+            echo "<script>      
+            window.onload = function(){
+              const toastLiveExample = document.getElementById('successUnfollow')
+              const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+              toastBootstrap.show()
+            } </script>";
+          } else {
+            echo "<script>      
+            window.onload = function(){
+              const toastLiveExample = document.getElementById('UserDoesNotExist')
+              const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+              toastBootstrap.show()
+            } </script>";
+          }
+        }
+
+
+        ?>
+
+
+
+
+
+
+      </form>
+    </div>
   </div>
 
   <div class="homepage">
@@ -29,33 +104,19 @@
             <tr>
               <th scope="col">View Post</th>
               <th scope="col">Title</th>
+              <th scope="col">Date Posted</th>
               <th scope="col">Comments</th>
               <th scope="col">Ratings</th>
               <th scope="col">Options</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th scope="row">
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#post-1" id="clickme">
-                  View Post
-                </button>
-              </th>
-              <td>POST TITLE HAHAAHk</td>
-              <td>0</td>
-              <td>0</td>
-              <td>
-                <div class="dropdown">
-                  <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-ellipsis"></i>
-                  </button>
-                  <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Delete</a></li>
 
-                  </ul>
-                </div>
-              </td>
-            </tr>
+            <?php if (!loadProfileDiscussions()) {
+              echo '<tr>
+              <td colspan="6">No discussions found</td>
+            ';
+            } ?>
 
           </tbody>
         </table>
@@ -70,7 +131,7 @@
 
       <button class="btn btn-custom" type="button" data-bs-toggle="modal" data-bs-target="#createDiscussion">Create new Discussion</button>
       <a href="homepage.php" class="btn btn-custom">Home</a>
-      <a href="profile.php" class="btn btn-custom">My Profile</a>
+      <a href="profile.php?user=<?php echo $_SESSION['username']; ?>" class="btn btn-custom">My Profile</a>
       <button class="btn btn-custom">Messages</button>
       <button type="submit" name="btnLogout" class="btn btn-danger">Logout</button>
 
@@ -83,113 +144,42 @@
   </div>
 </div>
 
-
-<div class="modal fade " id="post-1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header" style="flex-direction: column; align-items: start;">
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        <h1 class="modal-title  fs-8" id="staticBackdropLabel">Post Title</h1>
-        <div class="author">
-          <div class="author-picture"></div>
-          <div>Post Author</div>
-        </div>
-
-      </div>
-      <div class="modal-body">
-        <div>asnd snasuidnasjidn iasndiaj sndiaj ndijasnd ijasnd asijdn asijdn asjid</div>
-        <hr>
-        <div class="post-toolbar">
-          <div class="karma-container">
-            <button><i class="fa-solid fa-thumbs-up"></i></button>
-            <div class="karma-counter">0</div>
-            <button><i class="fa-solid fa-thumbs-down"></i></button>
-          </div>
-
-          <div class="dropdown">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="fa-solid fa-ellipsis"></i>
-            </button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Delete</a></li>
-
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <div class="post-comments-container">
-          <textarea row="3"></textarea>
-          <button class="btn btn-primary">Add Comment</button>
-          <hr>
-          <div class="comment">
-            <div class="comment-header">
-              <div class="author-comment">
-                <div class="author-profile-comment"></div>
-                <div class="author-name-comment">Juan Dela Cruz</div>
-              </div>
-
-              <div class="dropdown">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="fa-solid fa-ellipsis"></i>
-                </button>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Delete</a></li>
-
-                </ul>
-              </div>
-            </div>
-            oasmndjoasnd nd oajsnd asdn so joanjosand ojasnd as asojdn asjod nasjod nasjod nas djo nsaojd nasjodn asnd s
-          </div>
-
-          <div class="comment">
-            <div class="comment-header">
-              <div class="author-comment">
-                <div class="author-profile-comment"></div>
-                <div class="author-name-comment">Juan Dela Cruz</div>
-              </div>
-
-              <div class="dropdown">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="fa-solid fa-ellipsis"></i>
-                </button>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Delete</a></li>
-
-                </ul>
-              </div>
-            </div>
-            oasmndjoasnd nd oajsnd asdn so joanjosand ojasnd as asojdn asjod nasjod nasjod nas djo nsaojd nasjodn asnd s
-
-          </div>
-        </div>
-
-
-      </div>
+<!-- Toast -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="successFollow" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <img src="..." class="rounded me-2" alt="...">
+      <strong class="me-auto">Reel Talks</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      Successfully Followed!
     </div>
   </div>
 </div>
 
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="UserDoesNotExist" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <img src="..." class="rounded me-2" alt="...">
+      <strong class="me-auto">Reel Talks</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      User Does Not Exist!
+    </div>
+  </div>
+</div>
 
-<!-- Create Discussion -->
-<div class="modal fade " id="createDiscussion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title  fs-5" id="staticBackdropLabel">Create Discussion</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <label for="inputUsername" class="form-label">Post Title</label>
-        <input type="text" id="inputUsername" class="form-control" required>
-        <label for="inputUsername" class="form-label">Post Image link (optional)</label>
-        <input type="text" id="inputUsername" class="form-control">
-        <label for="inputPassword5" class="form-label">Post Content</label>
-        <textarea class="form-control" required></textarea>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Post</button>
-      </div>
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="successUnfollow" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <img src="..." class="rounded me-2" alt="...">
+      <strong class="me-auto">Reel Talks</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      Successfully Unfollowed!
     </div>
   </div>
 </div>
