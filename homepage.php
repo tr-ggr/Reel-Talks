@@ -44,6 +44,13 @@
       <button class="btn btn-custom" type="button" data-bs-toggle="modal" data-bs-target="#createDiscussion">Create new Discussion</button>
       <a href="homepage.php" class="btn btn-custom">Home</a>
       <a href="profile.php?user=<?php echo $_SESSION['username']; ?>" class="btn btn-custom">My Profile</a>
+      <?php
+      if ($_SESSION["isAdmin"]) {
+        echo '
+      <a href="report.php" class="btn btn-custom">Report</a>';
+      }
+
+      ?>
       <button class="btn btn-custom">Messages</button>
       <button type="submit" name="btnLogout" class="btn btn-danger">Logout</button>
 

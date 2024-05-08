@@ -1,6 +1,105 @@
 <?php
 
 include 'connect.php';
+function getMostInteracted()
+{
+    $sql = "SELECT p.PostID, p.PostTitle, COUNT(c.CommentID) AS NumComments
+    FROM tblpost p
+    LEFT JOIN tblpostcomment c ON p.PostID = c.PostID
+    GROUP BY p.PostID, p.PostTitle
+    ORDER BY NumComments DESC
+    LIMIT 5;
+    ";
+
+    $result = mysqli_query($GLOBALS['connection'], $sql);
+    $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    $ctr = 1;
+    $records = '';
+    foreach ($row as $record) {
+        $records .= '
+        <tr>
+            <th scope="row">' . $ctr . '</th>
+            <td>' . $record['PostID'] . '</td>
+            <td>' . $record['PostTitle'] . '</td>
+            <td>' . $record['NumComments'] . '</td>
+        </tr>';
+        // var_dump($record);
+        // return;
+
+        $ctr++;
+    }
+
+    return $records;
+}
+
+function getMostActive()
+{
+    $sql = "SELECT
+    u.acctid,
+    u.Username,
+    COUNT(p.useraccountid) AS Number_of_Posts,
+    COUNT(c.useraccountid) AS Number_of_Comments,
+    COUNT(p.useraccountid) + COUNT(c.useraccountid) AS Total_Activity
+    FROM
+        tbluseraccount AS u
+    LEFT JOIN
+        tblpost AS p ON u.acctid = p.useraccountid
+    LEFT JOIN
+        tblcomment AS c ON u.acctid = c.useraccountid
+    GROUP BY
+        u.acctid,
+        u.Username
+    ORDER BY
+        Total_Activity DESC
+    LIMIT 5";
+
+    $result = mysqli_query($GLOBALS['connection'], $sql);
+    $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    $ctr = 1;
+    $records = '';
+    foreach ($row as $record) {
+        $records .= '
+        <tr>
+            <th scope="row">' . $ctr . '</th>
+            <td>' . $record['acctid'] . '</td>
+            <td>' . $record['Username'] . '</td>
+            <td>' . $record['Number_of_Posts'] . '</td>
+            <td>' . $record['Number_of_Comments'] . '</td>
+        </tr>';
+        // var_dump($record);
+        // return;
+
+        $ctr++;
+    }
+
+    return $records;
+}
+
+
+function  getLatestPost()
+{
+    $sql = "SELECT * FROM tblpost ORDER BY post_date DESC LIMIT 5";
+    $result = mysqli_query($GLOBALS['connection'], $sql);
+    $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    $ctr = 1;
+    $records = '';
+    foreach ($row as $record) {
+        $records .= '
+        <tr>
+            <th scope="row">' . $ctr . '</th>
+            <td>' . $record['PostTitle'] . '</td>
+            <td>' . $record['Post_Date'] . '</td>
+        </tr>';
+
+        $ctr++;
+    }
+
+    return $records;
+}
+
 
 function getFollowers()
 {
