@@ -2,7 +2,7 @@
 
 <div class="content">
     <div class="genre-banner">
-        <h1 class="fa-regular fa-comments"></h1>
+        <h1 class="fa-regular fa-file"></h1>
         <h1>Admin Report</h1>
     </div>
 
@@ -19,6 +19,7 @@
                             <th scope="col">Username</th>
                             <th scope="col">No. of Comments</th>
                             <th scope="col">No. of Posts</th>
+                            <th scope="col">Total Activity</th>
                         </tr>
                     </thead>
                     <tbody>
