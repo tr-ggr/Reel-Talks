@@ -38,9 +38,9 @@ function getMostActive()
     $sql = "SELECT
     u.acctid,
     u.Username,
-    COUNT(DISTINCT p.PostID) AS Number_of_Posts,
-    COUNT(DISTINCT c.CommentID) AS Number_of_Comments,
-    COUNT(DISTINCT p.PostID) + COUNT(DISTINCT c.CommentID) AS Total_Activity
+    COUNT(p.useraccountid) AS Number_of_Posts,
+    COUNT(c.useraccountid) AS Number_of_Comments,
+    COUNT(p.useraccountid) + COUNT(c.useraccountid) AS Total_Activity
     FROM
         tbluseraccount AS u
     LEFT JOIN
@@ -65,9 +65,8 @@ function getMostActive()
             <th scope="row">' . $ctr . '</th>
             <td>' . $record['acctid'] . '</td>
             <td>' . $record['Username'] . '</td>
-            <td>' . $record['Number_of_Comments'] . '</td>
             <td>' . $record['Number_of_Posts'] . '</td>
-            <td>' . $record['Total_Activity'] . '</td>
+            <td>' . $record['Number_of_Comments'] . '</td>
         </tr>';
         // var_dump($record);
         // return;
