@@ -12,6 +12,7 @@
   </div>
 </div>
 
+
 <div class="toast-container position-fixed bottom-0 end-0 p-3">
   <div id="deleteToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="toast-header">
@@ -95,6 +96,27 @@
   </div>
 </div>
 
+<div class="modal fade " id="createDiscussion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title  fs-5" id="staticBackdropLabel">Delete Discussion</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form method="post">
+        <div class="modal-body">
+
+          Are you sure you want to delete this?
+
+        </div>
+        <div class="modal-footer">
+          <button type="submit" name="btnPostDiscussion" class="btn btn-secondary" data-bs-dismiss="modal">Post</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <?php
 
 if (isset($_POST['btnLogout'])) {
@@ -104,8 +126,10 @@ if (isset($_POST['btnLogout'])) {
 
 
 if (isset($_POST['btnDeletePost'])) {
+  //POP UP
+
   $PostID = $_POST['postID'];
-  $sqlDeletePost = "DELETE FROM tblpost WHERE PostID = '$PostID'";
+  $sqlDeletePost = "UPDATE tblpost SET isDeleted = 1 WHERE PostID = $PostID";
   mysqli_query($connection, $sqlDeletePost);
 
   echo "<script>
@@ -119,7 +143,7 @@ if (isset($_POST['btnDeletePost'])) {
 
 if (isset($_POST['btnDeleteComment'])) {
   $CommentID = $_POST['commentID'];
-  $sqlDeleteComment = "DELETE FROM tblcomment WHERE CommentID = '$CommentID'";
+  $sqlDeleteComment = "UPDATE tblcomment SET isDeleted = 1 WHERE CommentID = '$CommentID'";
   mysqli_query($connection, $sqlDeleteComment);
 
   echo "<script>

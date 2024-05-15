@@ -219,11 +219,11 @@ function loadProfileDiscussions($search = "")
     $username = $_GET['user'];
 
     if ($searchKeyword == "") {
-        $sqlSearch = "SELECT * FROM tblpost WHERE UserAccountID = (SELECT acctid FROM tbluseraccount WHERE username = '$username')";
+        $sqlSearch = "SELECT * FROM tblpost WHERE UserAccountID = (SELECT acctid FROM tbluseraccount WHERE username = '$username') AND isDeleted = 0";
         $result = mysqli_query($GLOBALS['connection'], $sqlSearch);
         $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
     } else {
-        $sqlSearch = "SELECT * FROM tblpost WHERE UserAccountID = (SELECT acctid FROM tbluseraccount WHERE username = '$username') AND PostTitle LIKE '%$searchKeyword%' OR Content LIKE '%$searchKeyword%'";
+        $sqlSearch = "SELECT * FROM tblpost WHERE UserAccountID = (SELECT acctid FROM tbluseraccount WHERE username = '$username') AND PostTitle LIKE '%$searchKeyword%' OR Content LIKE '%$searchKeyword%' AND isDeleted = 0";
         $result = mysqli_query($GLOBALS['connection'], $sqlSearch);
         $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
@@ -246,13 +246,19 @@ function loadProfileDiscussions($search = "")
         $postcomments = "";
         $modal = "";
         $modalCommentEdit = "";
+        $comment_count = count($comments);
 
         $comments = array_reverse($comments);
         foreach ($comments as $commentParse) {
             //Comment Details
-            $sql3 = "SELECT * FROM tblcomment WHERE CommentID = " . $commentParse['CommentID'] . "";
+            $sql3 = "SELECT * FROM tblcomment WHERE CommentID = " . $commentParse['CommentID'] . " AND isDeleted = 0";
             $result3 = mysqli_query($GLOBALS['connection'], $sql3);
             $comment = mysqli_fetch_assoc($result3);
+
+            if ($comment == NULL) {
+                $comment_count--;
+                continue;
+            }
 
             //Author of Comment
             $sql4 = "SELECT * FROM tbluseraccount WHERE acctid = " . $comment['UserAccountID'] . "";
@@ -284,7 +290,7 @@ function loadProfileDiscussions($search = "")
                              </button>
                          </li>
                          <li>
-                             <button type="submit" name = "btnDeleteComment" class="dropdown-item btn btn-link">
+                             <button type="submit" name = "btnDeleteComment"  onclick="return confirm(' . '`Are you sure you want to delete this?`' . ')" class="dropdown-item btn btn-link">
                                  Delete
                              </button>
                          </li>
@@ -328,7 +334,7 @@ function loadProfileDiscussions($search = "")
          </th>
          <td>' . $post["PostTitle"] . '</td>
          <td>' . $post["Post_Date"] . '</td>
-         <td>' . count($comments) . '</td>
+         <td>' . $comment_count . '</td>
          <td>0</td>
          <td>
            <div class="dropdown">
@@ -414,7 +420,7 @@ function loadProfileDiscussions($search = "")
                                  Edit
                              </button>
                          <li>
-                         <button type="submit" name = "btnDeletePost" class="dropdown-item btn btn-link">
+                         <button type="submit" name = "btnDeletePost" onclick="return confirm(' . '`Are you sure you want to delete this?`' . ')" class="dropdown-item btn btn-link">
                              Delete
                          </button>
                          </li>
@@ -470,19 +476,19 @@ function loadDiscussions($search = "", $userid = "")
     $userID = $userid;
 
     if ($searchKeyword == "" && $userID == "") {
-        $sqlSearch = "SELECT * FROM tblpost";
+        $sqlSearch = "SELECT * FROM tblpost WHERE isDeleted = 0";
         $result = mysqli_query($GLOBALS['connection'], $sqlSearch);
         $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
     } elseif ($searchKeyword != "" && $userID == "") {
-        $sqlSearch = "SELECT * FROM tblpost WHERE PostTitle LIKE '%$searchKeyword%' OR Content LIKE '%$searchKeyword%'";
+        $sqlSearch = "SELECT * FROM tblpost WHERE (PostTitle LIKE '%$searchKeyword%' OR Content LIKE '%$searchKeyword%') AND isDeleted = 0";
         $result = mysqli_query($GLOBALS['connection'], $sqlSearch);
         $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
     } elseif ($searchKeyword == "" && $userID != "") {
-        $sqlSearch = "SELECT * FROM tblpost WHERE UserAccountID = '$userID'";
+        $sqlSearch = "SELECT * FROM tblpost WHERE UserAccountID = '$userID' AND isDeleted = 0";
         $result = mysqli_query($GLOBALS['connection'], $sqlSearch);
         $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
     } else {
-        $sqlSearch = "SELECT * FROM tblpost WHERE PostTitle LIKE '%$searchKeyword%' OR Content LIKE '%$searchKeyword%' AND UserAccountID = '$userID'";
+        $sqlSearch = "SELECT * FROM tblpost WHERE (PostTitle LIKE '%$searchKeyword%' OR Content LIKE '%$searchKeyword%' AND UserAccountID = '$userID') AND isDeleted = 0";
         $result = mysqli_query($GLOBALS['connection'], $sqlSearch);
         $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
@@ -507,12 +513,20 @@ function loadDiscussions($search = "", $userid = "")
         $modal = "";
         $modalCommentEdit = "";
 
+        $comment_count = count($comments);
+
+
         $comments = array_reverse($comments);
         foreach ($comments as $commentParse) {
             //Comment Details
-            $sql3 = "SELECT * FROM tblcomment WHERE CommentID = " . $commentParse['CommentID'] . "";
+            $sql3 = "SELECT * FROM tblcomment WHERE CommentID = " . $commentParse['CommentID'] . " AND isDeleted = 0";
             $result3 = mysqli_query($GLOBALS['connection'], $sql3);
             $comment = mysqli_fetch_assoc($result3);
+
+            if ($comment == NULL) {
+                $comment_count--;
+                continue;
+            }
 
             //Author of Comment
             $sql4 = "SELECT * FROM tbluseraccount WHERE acctid = " . $comment['UserAccountID'] . "";
@@ -545,7 +559,7 @@ function loadDiscussions($search = "", $userid = "")
                         </button>
                     </li>
                     <li>
-                        <button type="submit" name = "btnDeleteComment" class="dropdown-item btn btn-link">
+                        <button type="submit" name = "btnDeleteComment" onclick="return confirm(' . '`Are you sure you want to delete this?`' . ')" class="dropdown-item btn btn-link">
                             Delete
                         </button>
                     </li>
@@ -608,7 +622,7 @@ function loadDiscussions($search = "", $userid = "")
 
                             <div class = "comments-container">
                                 <i class="fa-solid fa-comment"></i>
-                                <div class = "comments">' . count($comments) . ' comments</div>
+                                <div class = "comments">' . $comment_count . ' comments</div>
                             </div>
                         </div>
                     </div>
@@ -691,7 +705,7 @@ function loadDiscussions($search = "", $userid = "")
                             Edit
                         </button>
                     <li>
-                    <button type="submit" name = "btnDeletePost" class="dropdown-item btn btn-link">
+                    <button type="submit" name = "btnDeletePost" onclick="return confirm(' . '`Are you sure you want to delete this?`' . ')" class="dropdown-item btn btn-link">
                         Delete
                     </button>
                     </li>

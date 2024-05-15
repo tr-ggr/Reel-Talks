@@ -8,7 +8,6 @@
 
     <div class="homepage">
         <div class="report-wrapper">
-            <h3> Graph </h3>
             <div class="total-activity-chart">
 
             </div>
