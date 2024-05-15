@@ -15,6 +15,19 @@
   gap: 2em;
 }
 
+.report-wrapper {
+  width: 100%;
+}
+
+.stats-board {
+  width: 100%;
+  height: fit-content;
+
+  display: flex;
+  gap: 1em;
+  justify-content: space-between;
+}
+
 .profilepage-picture {
   width: 10em;
   height: 10em;

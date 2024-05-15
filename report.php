@@ -8,6 +8,53 @@
 
     <div class="homepage">
         <div class="report-wrapper">
+            <h3> Graph </h3>
+            <div class="total-activity-chart">
+
+            </div>
+            <h3> Stats Board </h3>
+            <div class="stats-board">
+
+                <div class="card border-secondary mb-3" style="min-width: 11em; max-width: 18rem;">
+                    <div class="card-header">Total Posts</div>
+                    <div class="card-body text-secondary">
+                        <h1 class="card-title" style="font-size: 5ch; display:flex; width:100%; justify-content: center;"><?php echo getNumberofPosts() ?></h1>
+                    </div>
+                </div>
+
+                <div class="card border-secondary mb-3" style="min-width: 11em; max-width: 18rem;">
+                    <div class="card-header">Total Comments</div>
+                    <div class="card-body text-secondary">
+                        <h1 class="card-title" style="font-size: 5ch; display:flex; width:100%; justify-content: center;"><?php echo getNumberofComments() ?></h1>
+                    </div>
+                </div>
+
+                <div class="card border-secondary mb-3" style="min-width: 11em; max-width: 18rem;">
+                    <div class="card-header">Total Users</div>
+                    <div class="card-body text-secondary">
+                        <h1 class="card-title" style="font-size: 5ch; display:flex; width:100%; justify-content: center;"><?php echo getTotalUsers() ?></h1>
+                    </div>
+                </div>
+
+                <div class="card border-secondary mb-3" style="min-width: 11em; max-width: 18rem;">
+                    <div class="card-header">Total Admins</div>
+                    <div class="card-body text-secondary">
+                        <h1 class="card-title" style="font-size: 5ch; display:flex; width:100%; justify-content: center;"><?php echo getTotalAdmins() ?></h1>
+                    </div>
+                </div>
+
+                <div class="card border-secondary mb-3" style="min-width: 11em; max-width: 18rem;">
+                    <div class="card-header">Average Comments Today</div>
+                    <div class="card-body text-secondary" style="display:flex; width:100%; justify-content: center; align-items:center; flex-direction: column;">
+                        <h1 class="card-title" style="font-size: 5ch; display:flex; width:100%; justify-content: center; align-items:center;"><?php echo (getAvgCommentsPerPostToday()) ?></h1>
+                        <p class="card-text" style='font-size:2ch;text-align: center;'>per post</p>
+                    </div>
+                </div>
+
+            </div>
+
+
+
             <!-- Table 1 -->
             <div class="most-active-table">
                 <h3> Most Active Users </h3>
@@ -19,6 +66,7 @@
                             <th scope="col">Username</th>
                             <th scope="col">No. of Comments</th>
                             <th scope="col">No. of Posts</th>
+                            <th scope="col">Total Activity </th>
                         </tr>
                     </thead>
                     <tbody>

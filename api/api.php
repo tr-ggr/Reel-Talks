@@ -33,14 +33,61 @@ function getMostInteracted()
     return $records;
 }
 
+function getNumberofPosts()
+{
+    $sql = "SELECT COUNT(*) AS NumPosts FROM tblpost";
+    $result = mysqli_query($GLOBALS['connection'], $sql);
+    $row = mysqli_fetch_assoc($result);
+
+    return $row['NumPosts'];
+}
+
+function getNumberofComments()
+{
+    $sql = "SELECT COUNT(*) AS NumComments FROM tblcomment";
+    $result = mysqli_query($GLOBALS['connection'], $sql);
+    $row = mysqli_fetch_assoc($result);
+
+    return $row['NumComments'];
+}
+
+function getTotalUsers()
+{
+    $sql = "SELECT COUNT(*) AS NumUsers FROM tbluseraccount";
+    $result = mysqli_query($GLOBALS['connection'], $sql);
+    $row = mysqli_fetch_assoc($result);
+
+    return $row['NumUsers'];
+}
+
+function getTotalAdmins()
+{
+    // Assuming there's a column 'isAdmin' in 'tbluseraccount' table that indicates whether a user is an admin
+    $sql = "SELECT COUNT(*) AS NumAdmins FROM tbluseraccount WHERE isAdmin = 1";
+    $result = mysqli_query($GLOBALS['connection'], $sql);
+    $row = mysqli_fetch_assoc($result);
+
+    return $row['NumAdmins'];
+}
+
+function getAvgCommentsPerPostToday()
+{
+    // Assuming 'commentdate' in 'tblcomment' table stores the date when a comment was made
+    $sql = "SELECT AVG(commentCount) AS AvgCommentsPerPostToday FROM ( SELECT COUNT(*) AS commentCount FROM tblpostcomment AS pc LEFT JOIN tblcomment AS C ON PC.CommentID = C.commentid WHERE DATE(comment_date) = CURDATE() GROUP BY postid ) AS dailyComments; ";
+    $result = mysqli_query($GLOBALS['connection'], $sql);
+    $row = mysqli_fetch_assoc($result);
+    return ($row['AvgCommentsPerPostToday'] == null) ? "0" :  number_format($row['AvgCommentsPerPostToday'], 2);
+}
+
+
 function getMostActive()
 {
     $sql = "SELECT
     u.acctid,
     u.Username,
-    COUNT(p.useraccountid) AS Number_of_Posts,
-    COUNT(c.useraccountid) AS Number_of_Comments,
-    COUNT(p.useraccountid) + COUNT(c.useraccountid) AS Total_Activity
+    COUNT(DISTINCT p.postid) AS Number_of_Posts,
+    COUNT(DISTINCT c.commentid) AS Number_of_Comments,
+    COUNT(DISTINCT p.postid) + COUNT(DISTINCT c.commentid) AS Total_Activity
     FROM
         tbluseraccount AS u
     LEFT JOIN
@@ -67,6 +114,7 @@ function getMostActive()
             <td>' . $record['Username'] . '</td>
             <td>' . $record['Number_of_Posts'] . '</td>
             <td>' . $record['Number_of_Comments'] . '</td>
+            <td>' . $record['Total_Activity'] . '</td>
         </tr>';
         // var_dump($record);
         // return;
