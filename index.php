@@ -154,7 +154,7 @@
 
 <!-- toasts -->
 <div class="toast-container position-fixed bottom-0 end-0 p-3">
-  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+  <div id="loginFailed" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="toast-header">
       <img src="..." class="rounded me-2" alt="...">
       <strong class="me-auto">Reel Talks</strong>
@@ -226,10 +226,11 @@ if (isset($_POST['btnLogin'])) {
   $row = mysqli_fetch_assoc($result);
 
   if ($row == 0) {
-    echo "<script>
-      const toastLiveExample = document.getElementById('liveToast')
+    echo "<script> window.onload = function() {
+      const toastLiveExample = document.getElementById('loginFailed')
       const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
       toastBootstrap.show()
+    }
     </script>";
   } else {
     if (password_verify($pword, $row['password'])) {
@@ -239,11 +240,11 @@ if (isset($_POST['btnLogin'])) {
       $_SESSION["isAdmin"] = $row['isAdmin'];
       echo "<script> window.location.replace('homepage.php');</script>";
     } else {
-      echo "<script>
-        const toastLiveExample = document.getElementById('liveToast')
+      echo "<script> window.onload = function() {
+        const toastLiveExample = document.getElementById('loginFailed')
         const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
         toastBootstrap.show()
-      </script>";
+      } </script>";
     }
   }
 }
@@ -288,18 +289,19 @@ if (isset($_POST['btnRegister'])) {
     $sql = "Insert into tbluseraccount(emailadd,username,password, userid) values('" . $email . "','" . $uname . "','" . $pword . "', " . $row2['userid'] . ")";
     mysqli_query($connection, $sql);
 
-    echo "<script>
+    echo "<script> window.onload = function() {
               const toastLiveExample = document.getElementById('successToast')
               const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
               toastBootstrap.show()
+    }
             </script>";
     // header("location: index.php");
   } else {
-    echo "<script>
+    echo "<script> window.onload = function() {
               const toastLiveExample = document.getElementById('failedToast')
               const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
               toastBootstrap.show()
-            </script>";
+     }  </script>";
   }
 }
 

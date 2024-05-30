@@ -61,7 +61,6 @@
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">UserID</th>
                             <th scope="col">Username</th>
                             <th scope="col">No. of Comments</th>
                             <th scope="col">No. of Posts</th>
@@ -81,7 +80,6 @@
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">PostID</th>
                             <th scope="col">Title</th>
                             <th scope="col">No. of Comments</th>
                         </tr>

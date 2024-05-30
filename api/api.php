@@ -1,13 +1,45 @@
 <?php
 
 include 'connect.php';
+// function getMostInteracted()
+// {
+//     $sql = "SELECT p.PostID, p.PostTitle, COUNT(c.CommentID) AS NumComments
+//     FROM tblpost p
+//     LEFT JOIN tblpostcomment c ON p.PostID = c.PostID
+//     GROUP BY p.PostID, p.PostTitle
+//     ORDER BY NumComments DESC
+//     LIMIT 5;
+//     ";
+
+//     $result = mysqli_query($GLOBALS['connection'], $sql);
+//     $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+//     $ctr = 1;
+//     $records = '';
+//     foreach ($row as $record) {
+//         $records .= '
+//         <tr>
+//             <th scope="row">' . $ctr . '</th>
+//             <td>' . $record['PostTitle'] . '</td>
+//             <td>' . $record['NumComments'] . '</td>
+//         </tr>';
+//         // var_dump($record);
+//         // return;
+
+//         $ctr++;
+//     }
+
+//     return $records;
+// }
+
 function getMostInteracted()
 {
-    $sql = "SELECT p.PostID, p.PostTitle, COUNT(c.CommentID) AS NumComments
+    $sql = "SELECT p.PostID, p.PostTitle, COUNT(c.CommentID) AS NumComments, COALESCE(SUM(v.voteStatus), 0) AS Votes
     FROM tblpost p
     LEFT JOIN tblpostcomment c ON p.PostID = c.PostID
+    LEFT JOIN tblpostvotes v ON p.PostID = v.postID
     GROUP BY p.PostID, p.PostTitle
-    ORDER BY NumComments DESC
+    ORDER BY NumComments DESC, Votes DESC
     LIMIT 5;
     ";
 
@@ -20,12 +52,10 @@ function getMostInteracted()
         $records .= '
         <tr>
             <th scope="row">' . $ctr . '</th>
-            <td>' . $record['PostID'] . '</td>
             <td>' . $record['PostTitle'] . '</td>
             <td>' . $record['NumComments'] . '</td>
+            <td>' . $record['Votes'] . '</td>
         </tr>';
-        // var_dump($record);
-        // return;
 
         $ctr++;
     }
@@ -70,6 +100,7 @@ function getTotalAdmins()
     return $row['NumAdmins'];
 }
 
+//Average
 function getAvgCommentsPerPostToday()
 {
     // Assuming 'commentdate' in 'tblcomment' table stores the date when a comment was made
@@ -110,7 +141,6 @@ function getMostActive()
         $records .= '
         <tr>
             <th scope="row">' . $ctr . '</th>
-            <td>' . $record['acctid'] . '</td>
             <td>' . $record['Username'] . '</td>
             <td>' . $record['Number_of_Posts'] . '</td>
             <td>' . $record['Number_of_Comments'] . '</td>
@@ -146,6 +176,35 @@ function  getLatestPost()
     }
 
     return $records;
+}
+
+function updateVote($postID, $acctID, $vote)
+{
+    // Check if a vote by this user on this post already exists
+    $sql = "SELECT * FROM tblpostvotes WHERE postID = $postID AND acctID = $acctID";
+    $result = mysqli_query($GLOBALS['connection'], $sql);
+    $existingVote = mysqli_fetch_assoc($result);
+
+    if ($existingVote) {
+        // If a vote already exists, update it
+        $sql = "UPDATE tblpostvotes SET voteStatus = $vote WHERE postvotesID = " . $existingVote['postvotesID'];
+    } else {
+        // If no vote exists, insert a new one
+        $sql = "INSERT INTO tblpostvotes (postID, acctID, voteStatus) VALUES ($postID, $acctID, $vote)";
+    }
+
+    $result = mysqli_query($GLOBALS['connection'], $sql);
+
+    return $result != false;
+}
+
+function getPostVote($postID)
+{
+    $sql = "SELECT SUM(voteStatus) AS Votes FROM tblpostvotes WHERE postID = $postID";
+    $result = mysqli_query($GLOBALS['connection'], $sql);
+    $row = mysqli_fetch_assoc($result);
+
+    return $row['Votes'];
 }
 
 
@@ -399,11 +458,11 @@ function loadProfileDiscussions($search = "")
                <h6 class="modal-title" id="staticBackdropLabel">Date posted: ' . $post["Post_Date"] . '</h6>
      
                <div class = "post-toolbar">
-               <div class = "karma-container">
+               <form class = "karma-container" method = "post">
                    <button><i class="fa-solid fa-thumbs-up"></i></button>
                    <div class = "karma-counter">0</div>
-                   <button><i class="fa-solid fa-thumbs-down"></i></button>
-               </div>
+                   <button type = "submit" name = ""><i class="fa-solid fa-thumbs-down"></i></button>
+               </form>
      
                
      
